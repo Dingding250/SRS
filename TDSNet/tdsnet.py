@@ -36,10 +36,8 @@ class SpectralPhaseAttention(nn.Module):
         
         phase_mask = self.phase_filter(phase_features)
         
-        # 将掩码作用于振幅，并结合原始相位重建复数
         refined_fft = amplitude * phase_mask * torch.exp(1j * phase)
         
-        # 逆傅里叶变换回空域
         x_refined = torch.fft.irfft2(refined_fft, s=(h, w), norm='ortho')
         x_refined = x_refined.reshape(b, c, -1).transpose(1, 2)
         
